@@ -36,6 +36,7 @@ window.addEventListener('scroll', function () {
 const categories = document.getElementById('categories')
 const items = document.getElementById('items')
 
+
 fetch('https://66b73b1e7f7b1c6d8f1b4adf.mockapi.io/api/product')
     .then((response) => {
         if (response.ok) {
@@ -44,31 +45,70 @@ fetch('https://66b73b1e7f7b1c6d8f1b4adf.mockapi.io/api/product')
             throw new Error('error');
         }
     })
-
     .then((product) => {
         console.log(product);
+
+        const uniqueCategories = new Set();
+
         product.forEach(element => {
-            console.log(element.image)
             items.innerHTML += `
-                        <div class="col-12 p-3">
-                            <div class="row h-100 border border-1 rounded-2 p-2 pointer">
-                                <div class="col-12 p-2">
-                                    <img src="${element.image}" class="w-100" alt="${element.name}">
-                                </div>
-                                <div class="col-12 d-flex flex-column" style="height: 100px;">
-                                    <h5 class="fs-6">${element.name}</h5>
-                                    <p class="fs-small truncate-3-lines">${element.description}</p>
-                                </div>
-                                <div class="col d-flex flex-column">
-                                    <small class="text-muted fs-supersmall">Size: <span>${element.size}</span></small>
-                                
+                <div class="col-12 p-3">
+                    <div class="row h-100 border border-1 rounded-2 p-2 pointer">
+                        <div class="col-12 p-2">
+                            <img src="${element.image}" class="w-100" alt="${element.name}">
+                        </div>
+                        <div class="col-12 d-flex flex-column" style="height: 100px;">
+                            <h5 class="fs-6">${element.name}</h5>
+                            <p class="fs-small truncate-3-lines">${element.description}</p>
+                        </div>
+                        <div class="col d-flex flex-column">
+                            <small class="text-muted fs-supersmall">Size: <span>${element.size}</span></small>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            uniqueCategories.add(element.catalog);
+        });
+
+        uniqueCategories.forEach(category => {
+            categories.innerHTML += `
+                <li class="list-unstyled pointerList" data-item="${category}">${category}</li>
+            `;
+        });
+
+        const catalogo = document.querySelectorAll('.pointerList');
+
+        catalogo.forEach(element => {
+            element.addEventListener('click', function () {
+                const selectedCategory = element.getAttribute('data-item');
+
+                items.innerHTML = '';
+
+                product.forEach(item => {
+                    if (item.catalog === selectedCategory) {
+                        items.innerHTML += `
+                            <div class="col-12 p-3">
+                                <div class="row h-100 border border-1 rounded-2 p-2 pointer">
+                                    <div class="col-12 p-2">
+                                        <img src="${item.image}" class="w-100" alt="${item.name}">
+                                    </div>
+                                    <div class="col-12 d-flex flex-column" style="height: 100px;">
+                                        <h5 class="fs-6">${item.name}</h5>
+                                        <p class="fs-small truncate-3-lines">${item.description}</p>
+                                    </div>
+                                    <div class="col d-flex flex-column">
+                                        <small class="text-muted fs-supersmall">Size: <span>${item.size}</span></small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        `
-        })
+                        `;
+                    }
+                });
+            });
+        });
     })
 
-    .catch((error) => {
-        console.log('errore', error);
+    .catch(error => {
+        console.error('Error:', error);
     });
