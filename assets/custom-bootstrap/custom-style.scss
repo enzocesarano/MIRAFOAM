@@ -264,11 +264,14 @@ footer a {
 
 .pointer {
     cursor: pointer;
-    transition-duration: 0.3s;
+    transition-duration: 0.3s; 
 
     &:hover {
         transform: scale(1.05)
     }
 }
+
+
+
 
 @import "scss/bootstrap.scss";

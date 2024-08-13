@@ -50,22 +50,20 @@ fetch('https://66b73b1e7f7b1c6d8f1b4adf.mockapi.io/api/product')
         product.forEach(element => {
             console.log(element.image)
             items.innerHTML += `
-                        <div class="col">
-                        <div id="${element.id}" class="card mb-4 shadow-sm pointer">
-                            <div class="text-center p-3 h-Class">
-                            <img
-                              src="${element.image}"
-                              class="bd-placeholder-img card-img-top show h-100 object-fit-contain"/>
+                        <div class="col border border-1 rounded-2 p-2 pointer">
+                            <div class="row h-100">
+                                <div class="col-12 p-2" style="height: 200px;">
+                                    <img src="${element.image}" class="w-100" alt="${element.name}">
+                                </div>
+                                <div class="col-12 d-flex flex-column" style="height: 100px;">
+                                    <h5 class="fs-6">${element.name}</h5>
+                                    <p class="fs-small overflow-hidden">${element.description}</p>
+                                </div>
+                                <div class="col d-flex flex-column">
+                                    <small class="text-muted fs-supersmall">Size: <span>${element.size}</span></small>
+                                
+                                </div>
                             </div>
-                            <div class="card-body">
-                              <h5 class="card-title fs-6">${element.name}</h5>
-                              <p class="card-text fs-small text-truncate">${element.description}
-                              </p>
-                              <div class="text-end">
-                                <small class="text-muted fs-supersmall">Size: <span>${element.size}</span></small>
-                              </div>
-                            </div>
-                          </div>
                         </div>
                         `
         })
