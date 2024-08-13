@@ -50,14 +50,14 @@ fetch('https://66b73b1e7f7b1c6d8f1b4adf.mockapi.io/api/product')
         product.forEach(element => {
             console.log(element.image)
             items.innerHTML += `
-                        <div class="col border border-1 rounded-2 p-2 pointer">
-                            <div class="row h-100">
-                                <div class="col-12 p-2" style="height: 200px;">
+                        <div class="col-12 p-3">
+                            <div class="row h-100 border border-1 rounded-2 p-2 pointer">
+                                <div class="col-12 p-2">
                                     <img src="${element.image}" class="w-100" alt="${element.name}">
                                 </div>
                                 <div class="col-12 d-flex flex-column" style="height: 100px;">
                                     <h5 class="fs-6">${element.name}</h5>
-                                    <p class="fs-small overflow-hidden">${element.description}</p>
+                                    <p class="fs-small truncate-3-lines">${element.description}</p>
                                 </div>
                                 <div class="col d-flex flex-column">
                                     <small class="text-muted fs-supersmall">Size: <span>${element.size}</span></small>
