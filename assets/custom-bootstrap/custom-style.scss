@@ -289,5 +289,8 @@ footer a {
     -webkit-line-clamp: 3 !important;
 }
 
+#nav {
+    backdrop-filter: blur(50px) !important;
+}
 
 @import "scss/bootstrap.scss";
