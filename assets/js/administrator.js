@@ -23,9 +23,18 @@ const inputSearch = document.getElementById('inputSearch');
 const rowDetails = document.getElementById('rowDetails');
 const search = document.getElementById('search')
 let products = [];
-let existingRelatedImages = []; // Variabile per tenere traccia delle immagini esistenti
+let existingRelatedImages = []; 
 
-// Cambiamenti di stile della navbar in base allo scroll
+
+const toggler = document.querySelectorAll('.navbar-toggler-icon')
+
+toggler.forEach(element => {
+    element.addEventListener('click', function() {
+        nav.classList.toggle('backdrop')
+    })    
+})
+
+
 window.addEventListener('scroll', function () {
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     if (scrollTop > 100) {

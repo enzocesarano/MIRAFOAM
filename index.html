@@ -14,7 +14,7 @@
     <header>
         <nav id="nav" class="navbar navbar-dark fs-4 navbar-expand-lg px-5 py-3">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand me-7" href="index.html">
                     <div class="w-70">
                         <?xml version="1.0" encoding="UTF-8"?>
                         <svg id="logoSvg" data-name="Livello 1" xmlns="http://www.w3.org/2000/svg"
@@ -77,16 +77,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item me-3">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item me-3">
-                            <a class="nav-link" href="/catalogo.html">Catalogo</a>
-                        </li>
-                        <li class="nav-item me-3">
-                            <a class="nav-link disabled" aria-disabled="true">Details</a>
-                        </li>
+                    <ul id="categories" class="navbar-nav me-auto mb-2 mb-lg-0">
+                        
                     </ul>
                     <form id="formSearch" class="d-flex" role="search">
                         <input id="inputSearch" class="form-control me-2" type="search" placeholder="Cerca"
@@ -107,22 +99,13 @@
                 <i class="d-block text-light display-5 mb-md-5 mb-4 media">L'esperienza e la competenza di un team
                     altamente
                     qualificato...</i>
-                <button class="btn btn-outline-warning border-3 fw-bold mediaBtn">VAI AL CATALOGO!</button>
+                <button id="clickItem" class="btn btn-outline-warning border-3 fw-bold mediaBtn">VAI AL CATALOGO!</button>
             </div>
         </section>
 
         <article class="container mb-10">
-            <section class="row">
-                <div class="col-3 col-lg-2 border border-0 border-end border-top border-2 rounded-2 py-3">
-                        <ul id="categories" class="p-0">
-
-                        </ul>
-                </div>
-                <div class="col-9 col-lg-10 px-4 border border-0 border-top border-2 rounded-2">
-                    <div id="items" class="row row-col-1 row-cols-sm-2 row-cols-md-3">
-                        
-                    </div>
-                </div>
+            <section id="items" class="row row-col-2 row-cols-sm-3 row-cols-md-4">
+                
             </section>
         </article>
 

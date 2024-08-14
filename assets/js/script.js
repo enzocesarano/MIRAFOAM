@@ -3,6 +3,14 @@ const logoSvg = document.getElementById('logoSvg')
 const cls2 = document.querySelectorAll('.cls-2')
 const inputSearch = document.getElementById('inputSearch')
 const search = document.getElementById('search')
+const toggler = document.querySelectorAll('.navbar-toggler-icon')
+
+toggler.forEach(element => {
+    console.log(element)
+    element.addEventListener('click', function () {
+        nav.classList.toggle('backdrop')
+    })
+})
 
 window.addEventListener('scroll', function () {
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -62,7 +70,7 @@ fetch('https://66b73b1e7f7b1c6d8f1b4adf.mockapi.io/api/product')
                             <p class="fs-small truncate-3-lines">${element.description}</p>
                         </div>
                         <div class="col d-flex flex-column">
-                            <small class="text-muted fs-supersmall">Size: <span>${element.size}</span></small>
+                            <small class="text-muted fs-supersmall">Misura: <span>${element.size}</span></small>
                         </div>
                     </div>
                 </div>
@@ -83,7 +91,9 @@ fetch('https://66b73b1e7f7b1c6d8f1b4adf.mockapi.io/api/product')
 
         uniqueCategories.forEach(category => {
             categories.innerHTML += `
-                <li class="list-unstyled pointerList" data-item="${category}">${category}</li>
+                <li class="nav-item me-2 fs-5 pointerList" data-item="${category}">
+                    <a class="nav-link" href="#clickItem">${category}</a>
+                </li>
             `;
         });
 
@@ -98,21 +108,29 @@ fetch('https://66b73b1e7f7b1c6d8f1b4adf.mockapi.io/api/product')
                 product.forEach(item => {
                     if (item.catalog === selectedCategory) {
                         items.innerHTML += `
-                            <div class="col-12 p-3">
-                                <div class="row h-100 border border-1 rounded-2 p-2 pointer" data-id="${item.id}>
-                                    <div class="col-12 p-2">
-                                        <img src="${item.mainImageUrl}" class="w-100" alt="${item.name}">
-                                    </div>
-                                    <div class="col-12 d-flex flex-column" style="height: 100px;">
-                                        <h5 class="fs-6">${item.name}</h5>
-                                        <p class="fs-small truncate-3-lines">${item.description}</p>
-                                    </div>
-                                    <div class="col d-flex flex-column">
-                                        <small class="text-muted fs-supersmall">Size: <span>${item.size}</span></small>
+                                <div class="col-12 p-3">
+                                    <div class="row h-100 border border-1 rounded-2 p-2 pointer details" data-id="${item.id}">
+                                        <div class="col-12 p-2">
+                                            <img src="${item.mainImageUrl}" class="w-100" alt="${item.name}">
+                                        </div>
+                                        <div class="col-12 d-flex flex-column" style="height: 100px;">
+                                            <h5 class="fs-6">${item.name}</h5>
+                                            <p class="fs-small truncate-3-lines">${item.description}</p>
+                                        </div>
+                                        <div class="col d-flex flex-column">
+                                            <small class="text-muted fs-supersmall">Misura: <span>${item.size}</span></small>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        `;
+                            `;
+
+                        const details = document.querySelectorAll('.details');
+                        details.forEach(element => {
+                            element.addEventListener('click', function () {
+                                const cardId = element.getAttribute('data-id');
+                                location.assign(`./details.html?cardId=${cardId}`);
+                            });
+                        });
                     }
                 });
             });
