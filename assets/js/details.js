@@ -50,7 +50,8 @@ fetch(`https://66b73b1e7f7b1c6d8f1b4adf.mockapi.io/api/product/${barParameters}`
             
             textDescription.innerHTML = `
                     <h1>${product1.name}</h1>
-                    <h4>${product1.description}</h4>`
+                    <p class="flex-grow-1">${product1.description}</p>
+                    <spam class="text-end text-secondary">Misura: ${product1.size}</spam>`
 
             product1.relatedImages.forEach(element => {
                 imgCorrelate.innerHTML += `
