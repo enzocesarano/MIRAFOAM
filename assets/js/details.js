@@ -1,8 +1,6 @@
 const nav = document.getElementById('nav');
 const logoSvg = document.getElementById('logoSvg')
 const cls2 = document.querySelectorAll('.cls-2')
-const inputSearch = document.getElementById('inputSearch')
-const search = document.getElementById('search')
 const imgProduct = document.getElementById('imgProduct')
 const textDescription = document.getElementById('textDescription')
 const imgCorrelate = document.getElementById('imgCorrelate')
@@ -12,20 +10,15 @@ window.addEventListener('scroll', function () {
     if (scrollTop > 100) {
         nav.style.background = 'white';
         nav.classList.remove('navbar-dark')
-        inputSearch.classList.add('input-dark')
         cls2.forEach(element => {
             element.style.fill = '#343a40'
         })
-        inputSearch.classList.add('inputBlack', 'bg-secondary')
-        search.classList.add('btn-outline-dark')
     } else {
         nav.style.background = 'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)';
         cls2.forEach(element => {
             element.style.fill = 'white'
         })
         nav.classList.add('navbar-dark')
-        inputSearch.classList.remove('inputBlack', 'bg-secondary')
-        search.classList.remove('btn-outline-dark')
     }
 });
 

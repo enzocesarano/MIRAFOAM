@@ -15,13 +15,14 @@ const cls2 = document.querySelectorAll('.cls-2');
 const inputName = document.getElementById('inputName');
 const inputDescription = document.getElementById('inputDescription');
 const inputImage = document.getElementById('inputImage');
-const inputImg = document.getElementById('inputImg');  // Modificato per selezionare l'input per immagini correlate
+const inputImg = document.getElementById('inputImg');  // Input per immagini correlate
 const inputSize = document.getElementById('inputSize');
 const inputCatalog = document.getElementById('inputCatalog');
 const formCard = document.getElementById('formCard');
 const inputSearch = document.getElementById('inputSearch');
 const rowDetails = document.getElementById('rowDetails');
 let products = [];
+let existingRelatedImages = []; // Variabile per tenere traccia delle immagini esistenti
 
 // Cambiamenti di stile della navbar in base allo scroll
 window.addEventListener('scroll', function () {
@@ -34,7 +35,6 @@ window.addEventListener('scroll', function () {
             element.style.fill = '#343a40';
         });
         inputSearch.classList.add('inputBlack', 'bg-secondary');
-        search.classList.add('btn-outline-dark');
     } else {
         nav.style.background = 'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0))';
         cls2.forEach(element => {
@@ -42,7 +42,6 @@ window.addEventListener('scroll', function () {
         });
         nav.classList.add('navbar-dark');
         inputSearch.classList.remove('inputBlack', 'bg-secondary');
-        search.classList.remove('btn-outline-dark');
     }
 });
 
@@ -63,7 +62,9 @@ if (barParameters) {
             inputImage.value = product1.mainImageUrl;
             inputSize.value = product1.size;
             inputCatalog.value = product1.catalog;
-            // Non c'è bisogno di gestire inputImg qui perché l'utente non ricarica le immagini in locale da MockAPI
+
+            // Memorizza le immagini esistenti
+            existingRelatedImages = product1.relatedImages || [];
         })
         .catch(error => {
             console.log('errore', error);
@@ -74,54 +75,59 @@ formCard.addEventListener('submit', function (e) {
     e.preventDefault();
 
     const files = inputImg.files; // Recupera i file delle immagini correlate
+    let base64ImagesPromise = Promise.resolve([]); // Inizializza una promessa per le immagini
+
     if (files.length > 0) {
+        // Se ci sono nuovi file, converti le immagini in base64
         const base64Promises = Array.from(files).map(file => resizeAndConvertToBase64(file));
-        Promise.all(base64Promises).then(base64Images => {
-            const newProduct = new Product(
-                inputName.value,
-                inputDescription.value,
-                inputImage.value,
-                base64Images,
-                inputSize.value,
-                inputCatalog.value
-            );
-
-            let methodCustom;
-            let urlCustom;
-
-            if (barParameters) {
-                urlCustom = `https://66b73b1e7f7b1c6d8f1b4adf.mockapi.io/api/product/${barParameters}`;
-                methodCustom = 'PUT';
-            } else {
-                urlCustom = `https://66b73b1e7f7b1c6d8f1b4adf.mockapi.io/api/product/`;
-                methodCustom = 'POST';
-            }
-
-            fetch(urlCustom, {
-                method: methodCustom,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newProduct),
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('error');
-                    }
-                })
-                .then(product => {
-                    console.log(product);
-                    setInterval(() => {
-                        location.assign(`./administrator.html`);
-                    }, 200);
-                })
-                .catch(error => {
-                    console.log('errore', error);
-                });
-        });
+        base64ImagesPromise = Promise.all(base64Promises);
     }
+
+    base64ImagesPromise.then(base64Images => {
+        const newProduct = new Product(
+            inputName.value,
+            inputDescription.value,
+            inputImage.value,
+            base64Images.length > 0 ? base64Images : existingRelatedImages, // Usa le nuove immagini se ci sono, altrimenti quelle esistenti
+            inputSize.value,
+            inputCatalog.value
+        );
+
+        let methodCustom;
+        let urlCustom;
+
+        if (barParameters) {
+            urlCustom = `https://66b73b1e7f7b1c6d8f1b4adf.mockapi.io/api/product/${barParameters}`;
+            methodCustom = 'PUT';
+        } else {
+            urlCustom = `https://66b73b1e7f7b1c6d8f1b4adf.mockapi.io/api/product/`;
+            methodCustom = 'POST';
+        }
+
+        fetch(urlCustom, {
+            method: methodCustom,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newProduct),
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('error');
+                }
+            })
+            .then(product => {
+                console.log(product);
+                setInterval(() => {
+                    location.assign(`./administrator.html`);
+                }, 200);
+            })
+            .catch(error => {
+                console.log('errore', error);
+            });
+    });
 });
 
 function resizeAndConvertToBase64(file) {
@@ -193,7 +199,7 @@ function displayCard(card, search = '') {
     card.forEach(element => {
         if (search === '' || element.name.toLowerCase().includes(search.toLowerCase())) {
             rowDetails.innerHTML +=
-             `<div class="col mb-3 p-0">
+                `<div class="col mb-3 p-0">
                     <div class="row">
                         <div class="col-1 shadow-sm d-flex flex-row align-items-center p-2 bg-secondary text-light shadow">
                             <div class="w-100">
@@ -204,8 +210,7 @@ function displayCard(card, search = '') {
                         </div>    
                         <div class="col-8 d-flex flex-column justify-content-center px-4">
                             <h5 class="card-title fs-6">${element.name}</h5>
-                            <p class="card-text text-truncate">${element.description}
-                            </p>
+                            <p class="card-text text-truncate">${element.description}</p>
                         </div>
                         <div class="col-2 text-end d-none d-md-flex flex-column justify-content-center">
                             <p class="card-title fs-6">${element.catalog}</p>
